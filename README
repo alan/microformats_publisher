@@ -1,0 +1,55 @@
+Microformat publisher plugin
+=============
+
+Microformat publisher Rails plugin to generate microformats models with a DSL, it also provides view methods to display them.
+
+License: MIT-License. See MIT-LICENSE file.
+
+==Installation
+
+Install as a normal Rails plugin with +http://microformats.rubyforge.org/svn/tags/microformats_publisher_0.1/+
+
+==Domain Specific Language
+
+The microformats are defined using a DSL, the definitions go on the <tt>structures</tt> directory, which each microformat in its file. If a microformat has a subformat, then the subformat also goes in its file.
+
+The plugin comes with <tt>geo</tt>, <tt>adr</tt>, <tt>hCard</tt> and <tt>hCalendar</tt> already defined. This existing microformats are a good source of examples on how to define new microformats.
+
+== Generating the models, migrations, etc
+
+Once the required microformats are defined, they can be generated with the Rails generator.
+
++./script/generate microformat h_card
+
+This will generate the hcard model, with its migration, fixtures and stub tests. It will also create the hCard models.
+
+==View Helpers
+
+The view helpers for the microformats take the form of "<tt>microformat-name</tt>_for". This initial version provides helper methods for geo, adr, hcard and hcalendar microformats.
+The helpers are similar to the <tt>form_for</tt> method in Rails. The arguments passed are the microformat object that holds the data, an options hash to specify some html attributes and a message to follow after the first html tag.
+
+To display the data, the helpers yields a <tt>Microformat</tt>Internal class that generates dinamically the methods needed for a specific microformat based on the attributes of the ActiveRecord models.
+As an example the <tt>geo</tt> microformat will use <tt>GeoInternal</tt> class, which will display longitude and latitude. Another role of the internal classes is to validate the microformats if they have any specific requirements.
+
+A simple example of a view helper microformat is geo:
+
+ <% geo_for @geo, {:tag => :div, :internal_tag => :span}, "GEO:" %> do |g|
+   <%= g.latitude %>
+   <%= g.longitude %>
+ <% end %>
+
+Will generate
+
+ <div class="geo>GEO:
+   <span class="latitude">0.444444</span>
+   <span class="longitude">0.55555</span>
+ </div>
+
+In this case, <tt>g</tt> is the GeoInternal class, which will check that latitude and longitude attributes exist in the @geo microformat attributes in the ActiveRecord model.
+
+For full details of how to use the helper methods see their documentation at:
+
+[geo_for] Microformat::Helpers::GeoPublic
+[hcard_for] Microformat::Helpers::HCardPublic
+[hcalendar_for] Microformat::Helpers::HCalendarPublic
+[address_for] Microformat::Helpers::AdrPublic

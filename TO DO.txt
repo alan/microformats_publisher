@@ -1,0 +1,17 @@
+# Create tests to check the structures created reflect what is expected
+# Create validations structure
+# Create validation parsing
+# Generate a structures directory (maybe at application root) during install?
+# Add error / parse trapping to the DSL
+
+# maybe should add something to make foreign keys for sub structures;
+# def self.foreign_key(from_table, from_column, to_table)
+#   constraint_name = "fk_#{from_table}_#{from_column}"
+#   execute %{alter table #{from_table}
+#   add constraint #{constraint_name}
+#   foreign key (#{from_column})
+#   references #{to_table}(id)}
+# end
+
+##** Totally re-write tests for Structures and re-write the test formats too.
+##** Update the structure definitions to include validations
